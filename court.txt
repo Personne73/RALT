@@ -1,0 +1,5 @@
+prendre Bracelet
+inventaire
+regarder
+aller Sud
+manger

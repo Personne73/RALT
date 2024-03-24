@@ -1,0 +1,43 @@
+prendre Bracelet
+aller SudEst
+prendre Oracle
+alea 2
+aller SudOuest
+alea
+prendre Parchemin
+utiliser Parchemin
+regarder
+aller Nord
+aller Ouest
+aller Sud
+prendre Rune
+ouvrir Haut
+aller Haut
+retour
+deposer Oracle
+manger
+inventaire
+aller NordOuest
+aller Est
+aller Est
+prendre Parchemin
+utiliser Parchemin
+aller Nord
+inspecter Rune
+charger Rune
+aller Ouest
+prendre Obsidienne
+utiliser Rune
+ouvrir Haut
+aller Haut
+prendre Plastron
+aller NordEst
+prendre Fiole
+retour
+aller NordOuest
+prendre Vanadinite
+inspecter Plastron
+assembler Plastron
+charger Talisman
+utiliser Talisman
+aller Sud
