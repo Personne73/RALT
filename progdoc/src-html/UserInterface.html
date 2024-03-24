@@ -1,0 +1,387 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1"></a>
+<span class="sourceLineNo">002</span><a id="line.2">import javax.swing.JFrame;</a>
+<span class="sourceLineNo">003</span><a id="line.3">import javax.swing.JTextField;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import javax.swing.JTextArea;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import javax.swing.JLabel;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import javax.swing.ImageIcon;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import javax.swing.JScrollPane;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import javax.swing.JPanel;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import javax.swing.JButton;</a>
+<span class="sourceLineNo">010</span><a id="line.10"></a>
+<span class="sourceLineNo">011</span><a id="line.11">// couleur des objets (boutons,...)</a>
+<span class="sourceLineNo">012</span><a id="line.12">import java.awt.Color;</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">import java.awt.Dimension;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import java.awt.BorderLayout;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import javax.swing.BoxLayout;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import java.awt.FlowLayout;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import java.awt.GridLayout;</a>
+<span class="sourceLineNo">019</span><a id="line.19"></a>
+<span class="sourceLineNo">020</span><a id="line.20">import java.awt.event.WindowAdapter;</a>
+<span class="sourceLineNo">021</span><a id="line.21">import java.awt.event.WindowEvent;</a>
+<span class="sourceLineNo">022</span><a id="line.22">import java.awt.event.ActionEvent;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import java.awt.event.ActionListener;</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25">import java.net.URL;</a>
+<span class="sourceLineNo">026</span><a id="line.26"></a>
+<span class="sourceLineNo">027</span><a id="line.27">// police d'écriture</a>
+<span class="sourceLineNo">028</span><a id="line.28">import java.awt.Font;</a>
+<span class="sourceLineNo">029</span><a id="line.29">/**</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * La classe pkg_game.UserInterface permet d'initialiser l'interface homme machine avec lequel le joueur intéragira</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * </a>
+<span class="sourceLineNo">032</span><a id="line.32"> * @author MBIAPA KETCHECKMEN Joël Trésor</a>
+<span class="sourceLineNo">033</span><a id="line.33"> * @version 2021.05</a>
+<span class="sourceLineNo">034</span><a id="line.34"> */</a>
+<span class="sourceLineNo">035</span><a id="line.35">public class pkg_game.UserInterface implements ActionListener</a>
+<span class="sourceLineNo">036</span><a id="line.36">{</a>
+<span class="sourceLineNo">037</span><a id="line.37">    private pkg_game.GameEngine aEngine;</a>
+<span class="sourceLineNo">038</span><a id="line.38">    private JFrame aMyFrame;</a>
+<span class="sourceLineNo">039</span><a id="line.39">    private JTextField aEntryField;</a>
+<span class="sourceLineNo">040</span><a id="line.40">    private JTextArea aLog;</a>
+<span class="sourceLineNo">041</span><a id="line.41">    private JLabel aImage;</a>
+<span class="sourceLineNo">042</span><a id="line.42">    private JButton[] aButtonTab;</a>
+<span class="sourceLineNo">043</span><a id="line.43">    private JScrollPane aListScroller;</a>
+<span class="sourceLineNo">044</span><a id="line.44">    private JScrollPane aInventoryScroller;</a>
+<span class="sourceLineNo">045</span><a id="line.45">    private JTextArea aInventory;</a>
+<span class="sourceLineNo">046</span><a id="line.46"></a>
+<span class="sourceLineNo">047</span><a id="line.47">    /**</a>
+<span class="sourceLineNo">048</span><a id="line.48">     * Constructeur naturel de UserInteface</a>
+<span class="sourceLineNo">049</span><a id="line.49">     * @param pGameEngine le moteur du jeu</a>
+<span class="sourceLineNo">050</span><a id="line.50">     */</a>
+<span class="sourceLineNo">051</span><a id="line.51">    public pkg_game.UserInterface( final pkg_game.GameEngine pGameEngine ) </a>
+<span class="sourceLineNo">052</span><a id="line.52">    {</a>
+<span class="sourceLineNo">053</span><a id="line.53">        this.aEngine = pGameEngine;</a>
+<span class="sourceLineNo">054</span><a id="line.54">        this.createGUI();</a>
+<span class="sourceLineNo">055</span><a id="line.55">    } // pkg_game.UserInterface(.)</a>
+<span class="sourceLineNo">056</span><a id="line.56"></a>
+<span class="sourceLineNo">057</span><a id="line.57">    /**</a>
+<span class="sourceLineNo">058</span><a id="line.58">     * Methode qui affiche du texte</a>
+<span class="sourceLineNo">059</span><a id="line.59">     * @param pText ligne de texte</a>
+<span class="sourceLineNo">060</span><a id="line.60">     */</a>
+<span class="sourceLineNo">061</span><a id="line.61">    public void print( final String pText )</a>
+<span class="sourceLineNo">062</span><a id="line.62">    {</a>
+<span class="sourceLineNo">063</span><a id="line.63">        this.aLog.append(pText);</a>
+<span class="sourceLineNo">064</span><a id="line.64">        this.aLog.setCaretPosition(this.aLog.getDocument().getLength());</a>
+<span class="sourceLineNo">065</span><a id="line.65">    } // print(.)</a>
+<span class="sourceLineNo">066</span><a id="line.66"></a>
+<span class="sourceLineNo">067</span><a id="line.67">    /**</a>
+<span class="sourceLineNo">068</span><a id="line.68">     * Méthode qui affiche le texte avec un saut de ligne</a>
+<span class="sourceLineNo">069</span><a id="line.69">     * @param pText ligne de texte</a>
+<span class="sourceLineNo">070</span><a id="line.70">     */</a>
+<span class="sourceLineNo">071</span><a id="line.71">    public void println( final String pText )</a>
+<span class="sourceLineNo">072</span><a id="line.72">    {</a>
+<span class="sourceLineNo">073</span><a id="line.73">        this.print(pText + "\n");</a>
+<span class="sourceLineNo">074</span><a id="line.74">    } // println(.)</a>
+<span class="sourceLineNo">075</span><a id="line.75"></a>
+<span class="sourceLineNo">076</span><a id="line.76">    /**</a>
+<span class="sourceLineNo">077</span><a id="line.77">     * Procédure qui permet de montrer une image dans l'interface</a>
+<span class="sourceLineNo">078</span><a id="line.78">     * @param pImageName le nom de l'image</a>
+<span class="sourceLineNo">079</span><a id="line.79">     */</a>
+<span class="sourceLineNo">080</span><a id="line.80">    public void showImage( final String pImageName )</a>
+<span class="sourceLineNo">081</span><a id="line.81">    {</a>
+<span class="sourceLineNo">082</span><a id="line.82">        String vImagePath = "Images/" + pImageName; // pour changer le repertoire</a>
+<span class="sourceLineNo">083</span><a id="line.83">        URL vImageURL = this.getClass().getClassLoader().getResource( vImagePath );</a>
+<span class="sourceLineNo">084</span><a id="line.84">        if ( vImageURL == null )</a>
+<span class="sourceLineNo">085</span><a id="line.85">            System.out.println( "Image non trouvée : " + vImagePath );</a>
+<span class="sourceLineNo">086</span><a id="line.86">        else {</a>
+<span class="sourceLineNo">087</span><a id="line.87">            ImageIcon vIcon = new ImageIcon( vImageURL );</a>
+<span class="sourceLineNo">088</span><a id="line.88">            this.aImage.setIcon( vIcon );</a>
+<span class="sourceLineNo">089</span><a id="line.89">            this.aMyFrame.pack();</a>
+<span class="sourceLineNo">090</span><a id="line.90">        }</a>
+<span class="sourceLineNo">091</span><a id="line.91">    } // showImage(.)</a>
+<span class="sourceLineNo">092</span><a id="line.92"></a>
+<span class="sourceLineNo">093</span><a id="line.93">    /**</a>
+<span class="sourceLineNo">094</span><a id="line.94">     * Active ou désactive la saisi dans le champ de saisi.</a>
+<span class="sourceLineNo">095</span><a id="line.95">     * @param pOnOff boolean qui active ou desactive la saisi</a>
+<span class="sourceLineNo">096</span><a id="line.96">     */</a>
+<span class="sourceLineNo">097</span><a id="line.97">    public void enable( final boolean pOnOff )</a>
+<span class="sourceLineNo">098</span><a id="line.98">    {</a>
+<span class="sourceLineNo">099</span><a id="line.99">        this.aEntryField.setEditable( pOnOff ); // enable/disable</a>
+<span class="sourceLineNo">100</span><a id="line.100">        if ( ! pOnOff ) { // disable</a>
+<span class="sourceLineNo">101</span><a id="line.101">            this.aEntryField.getCaret().setBlinkRate( 0 ); // cursor won't blink</a>
+<span class="sourceLineNo">102</span><a id="line.102">            this.aEntryField.removeActionListener( this ); // won't react to entry</a>
+<span class="sourceLineNo">103</span><a id="line.103">        }</a>
+<span class="sourceLineNo">104</span><a id="line.104">    } // enable(.)</a>
+<span class="sourceLineNo">105</span><a id="line.105"></a>
+<span class="sourceLineNo">106</span><a id="line.106">    /**</a>
+<span class="sourceLineNo">107</span><a id="line.107">     * Procédure qui crée l'interface graphique de l'utilisateur</a>
+<span class="sourceLineNo">108</span><a id="line.108">     */</a>
+<span class="sourceLineNo">109</span><a id="line.109">    private void createGUI()</a>
+<span class="sourceLineNo">110</span><a id="line.110">    {</a>
+<span class="sourceLineNo">111</span><a id="line.111">        this.aMyFrame = new JFrame( "R&amp;LT - by 113 Block | Personne73 Sponso Vitality Clément" ); // change the title</a>
+<span class="sourceLineNo">112</span><a id="line.112">        this.aEntryField = new JTextField( 34 );</a>
+<span class="sourceLineNo">113</span><a id="line.113"></a>
+<span class="sourceLineNo">114</span><a id="line.114">        this.aLog = new JTextArea();</a>
+<span class="sourceLineNo">115</span><a id="line.115">        this.aLog.setEditable( false );</a>
+<span class="sourceLineNo">116</span><a id="line.116">        this.aListScroller = new JScrollPane( this.aLog );</a>
+<span class="sourceLineNo">117</span><a id="line.117">        this.aListScroller.setPreferredSize( new Dimension(600, 300) );</a>
+<span class="sourceLineNo">118</span><a id="line.118">        this.aListScroller.setMinimumSize( new Dimension(100,100) );</a>
+<span class="sourceLineNo">119</span><a id="line.119"></a>
+<span class="sourceLineNo">120</span><a id="line.120">        JPanel vPanel = new JPanel();</a>
+<span class="sourceLineNo">121</span><a id="line.121">        this.aImage = new JLabel();</a>
+<span class="sourceLineNo">122</span><a id="line.122"></a>
+<span class="sourceLineNo">123</span><a id="line.123">        //modification de la police</a>
+<span class="sourceLineNo">124</span><a id="line.124">        this.aLog.setFont(new Font("Calibri", Font.PLAIN, 12));</a>
+<span class="sourceLineNo">125</span><a id="line.125"></a>
+<span class="sourceLineNo">126</span><a id="line.126">        //creation d'un panneau pour le bouton</a>
+<span class="sourceLineNo">127</span><a id="line.127">        JPanel vButtonPanel = new JPanel();</a>
+<span class="sourceLineNo">128</span><a id="line.128"></a>
+<span class="sourceLineNo">129</span><a id="line.129">        //création d'un panneau pour l'inventaire/affichage</a>
+<span class="sourceLineNo">130</span><a id="line.130">        JPanel vAffichagePanel = new JPanel();</a>
+<span class="sourceLineNo">131</span><a id="line.131"></a>
+<span class="sourceLineNo">132</span><a id="line.132">        //création d'une zone de texte pour l'inventaire</a>
+<span class="sourceLineNo">133</span><a id="line.133">        this.aInventory = new JTextArea();</a>
+<span class="sourceLineNo">134</span><a id="line.134">        this.aInventory.setEditable( false );</a>
+<span class="sourceLineNo">135</span><a id="line.135"></a>
+<span class="sourceLineNo">136</span><a id="line.136">        //ajout de la zone de texte de l'inventaire dans le panneau scrollable </a>
+<span class="sourceLineNo">137</span><a id="line.137">        this.aInventoryScroller = new JScrollPane( this.aInventory );</a>
+<span class="sourceLineNo">138</span><a id="line.138">        this.aInventoryScroller.setPreferredSize( new Dimension(600, 300) );</a>
+<span class="sourceLineNo">139</span><a id="line.139">        this.aInventoryScroller.setMinimumSize( new Dimension(100,100) );</a>
+<span class="sourceLineNo">140</span><a id="line.140"></a>
+<span class="sourceLineNo">141</span><a id="line.141">        // création des boutons</a>
+<span class="sourceLineNo">142</span><a id="line.142">        JButton vHelpButton = new JButton("aide");</a>
+<span class="sourceLineNo">143</span><a id="line.143">        JButton vQuitButton = new JButton("quitter");</a>
+<span class="sourceLineNo">144</span><a id="line.144">        JButton vBackButton = new JButton("retour");</a>
+<span class="sourceLineNo">145</span><a id="line.145">        JButton vInventoryButton = new JButton("inventaire");</a>
+<span class="sourceLineNo">146</span><a id="line.146"></a>
+<span class="sourceLineNo">147</span><a id="line.147">        // modification de la couleur des boutons</a>
+<span class="sourceLineNo">148</span><a id="line.148">        vHelpButton.setBackground( Color.darkGray );</a>
+<span class="sourceLineNo">149</span><a id="line.149">        vHelpButton.setForeground( Color.yellow );</a>
+<span class="sourceLineNo">150</span><a id="line.150">        vQuitButton.setBackground( Color.darkGray );</a>
+<span class="sourceLineNo">151</span><a id="line.151">        vQuitButton.setForeground( Color.magenta );</a>
+<span class="sourceLineNo">152</span><a id="line.152">        vBackButton.setBackground( Color.darkGray );</a>
+<span class="sourceLineNo">153</span><a id="line.153">        vBackButton.setForeground( Color.yellow );</a>
+<span class="sourceLineNo">154</span><a id="line.154">        vInventoryButton.setBackground( Color.darkGray );</a>
+<span class="sourceLineNo">155</span><a id="line.155">        vInventoryButton.setForeground( Color.yellow );</a>
+<span class="sourceLineNo">156</span><a id="line.156"></a>
+<span class="sourceLineNo">157</span><a id="line.157">        // modification de la couleur de l'interface graphique</a>
+<span class="sourceLineNo">158</span><a id="line.158">        this.aEntryField.setBackground( Color.gray );</a>
+<span class="sourceLineNo">159</span><a id="line.159">        this.aEntryField.setForeground( Color.white );</a>
+<span class="sourceLineNo">160</span><a id="line.160">        this.aLog.setBackground( Color.gray );</a>
+<span class="sourceLineNo">161</span><a id="line.161">        this.aLog.setForeground( Color.white );</a>
+<span class="sourceLineNo">162</span><a id="line.162">        vPanel.setBackground( Color.gray );</a>
+<span class="sourceLineNo">163</span><a id="line.163">        vButtonPanel.setBackground( Color.gray );</a>
+<span class="sourceLineNo">164</span><a id="line.164"></a>
+<span class="sourceLineNo">165</span><a id="line.165">        vAffichagePanel.setBackground( Color.gray );</a>
+<span class="sourceLineNo">166</span><a id="line.166">        this.aInventory.setBackground( Color.gray );</a>
+<span class="sourceLineNo">167</span><a id="line.167">        this.aInventory.setForeground( Color.white );</a>
+<span class="sourceLineNo">168</span><a id="line.168"></a>
+<span class="sourceLineNo">169</span><a id="line.169">        this.aButtonTab = new JButton[4];</a>
+<span class="sourceLineNo">170</span><a id="line.170">        // ajout de bouton dans le tableau</a>
+<span class="sourceLineNo">171</span><a id="line.171">        this.aButtonTab[0] = vHelpButton;</a>
+<span class="sourceLineNo">172</span><a id="line.172">        this.aButtonTab[1] = vBackButton;</a>
+<span class="sourceLineNo">173</span><a id="line.173">        this.aButtonTab[2] = vInventoryButton;</a>
+<span class="sourceLineNo">174</span><a id="line.174">        this.aButtonTab[3] = vQuitButton;</a>
+<span class="sourceLineNo">175</span><a id="line.175"></a>
+<span class="sourceLineNo">176</span><a id="line.176">        // taille des panneaux</a>
+<span class="sourceLineNo">177</span><a id="line.177">        vPanel.setPreferredSize( new Dimension(700,600) );</a>
+<span class="sourceLineNo">178</span><a id="line.178">        vButtonPanel.setPreferredSize( new Dimension(90,100) );</a>
+<span class="sourceLineNo">179</span><a id="line.179"></a>
+<span class="sourceLineNo">180</span><a id="line.180">        // ajout de composants au panneau de l'interface</a>
+<span class="sourceLineNo">181</span><a id="line.181">        vPanel.setLayout( new BorderLayout() ); // ==&gt; only five places</a>
+<span class="sourceLineNo">182</span><a id="line.182">        vPanel.add( this.aImage, BorderLayout.NORTH );</a>
+<span class="sourceLineNo">183</span><a id="line.183">        vPanel.add( vAffichagePanel, BorderLayout.CENTER );</a>
+<span class="sourceLineNo">184</span><a id="line.184">        vPanel.add( this.aEntryField, BorderLayout.SOUTH );</a>
+<span class="sourceLineNo">185</span><a id="line.185">        vPanel.add( vButtonPanel, BorderLayout.WEST );</a>
+<span class="sourceLineNo">186</span><a id="line.186"></a>
+<span class="sourceLineNo">187</span><a id="line.187">        //ajout de composants au panneau des boutons</a>
+<span class="sourceLineNo">188</span><a id="line.188">        //vButtonPanel.setLayout( new BoxLayout(vButtonPanel, BoxLayout.Y_AXIS));</a>
+<span class="sourceLineNo">189</span><a id="line.189">        vButtonPanel.setLayout( new GridLayout(4, 0) );</a>
+<span class="sourceLineNo">190</span><a id="line.190">        vButtonPanel.add( vHelpButton, vButtonPanel );</a>
+<span class="sourceLineNo">191</span><a id="line.191">        vButtonPanel.add( vInventoryButton, vButtonPanel );</a>
+<span class="sourceLineNo">192</span><a id="line.192">        vButtonPanel.add( vBackButton, vButtonPanel );</a>
+<span class="sourceLineNo">193</span><a id="line.193">        vButtonPanel.add( vQuitButton, vButtonPanel );</a>
+<span class="sourceLineNo">194</span><a id="line.194"></a>
+<span class="sourceLineNo">195</span><a id="line.195">        // ajout de composants au panneau de l'affichage</a>
+<span class="sourceLineNo">196</span><a id="line.196">        vAffichagePanel.setLayout( new FlowLayout() );</a>
+<span class="sourceLineNo">197</span><a id="line.197">        vAffichagePanel.add( this.aListScroller );</a>
+<span class="sourceLineNo">198</span><a id="line.198">        vAffichagePanel.add( this.aInventoryScroller );</a>
+<span class="sourceLineNo">199</span><a id="line.199"></a>
+<span class="sourceLineNo">200</span><a id="line.200">        this.aMyFrame.getContentPane().add( vPanel, BorderLayout.CENTER );</a>
+<span class="sourceLineNo">201</span><a id="line.201">        // add some event listeners to some components</a>
+<span class="sourceLineNo">202</span><a id="line.202">        this.aEntryField.addActionListener( this );</a>
+<span class="sourceLineNo">203</span><a id="line.203">        vHelpButton.addActionListener( this );</a>
+<span class="sourceLineNo">204</span><a id="line.204">        vBackButton.addActionListener( this );</a>
+<span class="sourceLineNo">205</span><a id="line.205">        vQuitButton.addActionListener( this );</a>
+<span class="sourceLineNo">206</span><a id="line.206">        vInventoryButton.addActionListener( this );</a>
+<span class="sourceLineNo">207</span><a id="line.207"></a>
+<span class="sourceLineNo">208</span><a id="line.208">        // to end program when window is closed</a>
+<span class="sourceLineNo">209</span><a id="line.209">        this.aMyFrame.addWindowListener( new WindowAdapter() {</a>
+<span class="sourceLineNo">210</span><a id="line.210">                public void windowClosing(WindowEvent e) { System.exit(0); }</a>
+<span class="sourceLineNo">211</span><a id="line.211">            } );</a>
+<span class="sourceLineNo">212</span><a id="line.212"></a>
+<span class="sourceLineNo">213</span><a id="line.213">        this.aMyFrame.pack();</a>
+<span class="sourceLineNo">214</span><a id="line.214">        this.aMyFrame.setVisible( true );</a>
+<span class="sourceLineNo">215</span><a id="line.215">        this.aEntryField.requestFocus();</a>
+<span class="sourceLineNo">216</span><a id="line.216">        this.visibilityInventory(false); // rend le panneau d'inventaire invisible par défaut</a>
+<span class="sourceLineNo">217</span><a id="line.217">        this.setEnableInventoryB(false); // rend le bouton d'inventaire inutilisable par défaut</a>
+<span class="sourceLineNo">218</span><a id="line.218">        this.setEnableBackB(false); // rend le bouton de retour inutilisable par défaut</a>
+<span class="sourceLineNo">219</span><a id="line.219">    } // createGUI()  </a>
+<span class="sourceLineNo">220</span><a id="line.220"></a>
+<span class="sourceLineNo">221</span><a id="line.221">    /**</a>
+<span class="sourceLineNo">222</span><a id="line.222">     * Procédure qui permet de modifier la police d'écriture du panneau</a>
+<span class="sourceLineNo">223</span><a id="line.223">     * d'inventaire lorsque celui-ci est visible</a>
+<span class="sourceLineNo">224</span><a id="line.224">     */</a>
+<span class="sourceLineNo">225</span><a id="line.225">    public void fontInventoryPanel()</a>
+<span class="sourceLineNo">226</span><a id="line.226">    {</a>
+<span class="sourceLineNo">227</span><a id="line.227">        if ( this.aInventoryScroller.isVisible() ){</a>
+<span class="sourceLineNo">228</span><a id="line.228">            this.aInventory.setFont(new Font("Calibri", Font.PLAIN, 12));</a>
+<span class="sourceLineNo">229</span><a id="line.229">        }</a>
+<span class="sourceLineNo">230</span><a id="line.230">    } // fontInventoryPanel()</a>
+<span class="sourceLineNo">231</span><a id="line.231"></a>
+<span class="sourceLineNo">232</span><a id="line.232">    /**</a>
+<span class="sourceLineNo">233</span><a id="line.233">     * Procédure qui permet de rendre visible ou non le panneau </a>
+<span class="sourceLineNo">234</span><a id="line.234">     * scrollable de l'inventaire, et de mettre la visibilité opposé</a>
+<span class="sourceLineNo">235</span><a id="line.235">     * au panneau d'affichage du texte du jeu</a>
+<span class="sourceLineNo">236</span><a id="line.236">     * @param pVisibility le booléen indiquant la visibilité des panneaux</a>
+<span class="sourceLineNo">237</span><a id="line.237">     */</a>
+<span class="sourceLineNo">238</span><a id="line.238">    public void visibilityInventory( final boolean pVisibility )</a>
+<span class="sourceLineNo">239</span><a id="line.239">    {</a>
+<span class="sourceLineNo">240</span><a id="line.240">        this.aInventoryScroller.setVisible(pVisibility);</a>
+<span class="sourceLineNo">241</span><a id="line.241">        this.aListScroller.setVisible(!pVisibility);</a>
+<span class="sourceLineNo">242</span><a id="line.242">    } // visibilityInventory(.)</a>
+<span class="sourceLineNo">243</span><a id="line.243"></a>
+<span class="sourceLineNo">244</span><a id="line.244">    /**</a>
+<span class="sourceLineNo">245</span><a id="line.245">    * Procédure qui inverse la visibilité du panneau d'inventaire</a>
+<span class="sourceLineNo">246</span><a id="line.246">    */</a>
+<span class="sourceLineNo">247</span><a id="line.247">    public void inverseVisibility()</a>
+<span class="sourceLineNo">248</span><a id="line.248">    {</a>
+<span class="sourceLineNo">249</span><a id="line.249">        this.visibilityInventory( !this.aInventoryScroller.isVisible() );</a>
+<span class="sourceLineNo">250</span><a id="line.250">    } // inverseVisibility()</a>
+<span class="sourceLineNo">251</span><a id="line.251"></a>
+<span class="sourceLineNo">252</span><a id="line.252">    /**</a>
+<span class="sourceLineNo">253</span><a id="line.253">     * Procédure qui permet d'écrire dans le panneau d'inventaire</a>
+<span class="sourceLineNo">254</span><a id="line.254">     * en remplacant le texte présent et en l'affichant</a>
+<span class="sourceLineNo">255</span><a id="line.255">     * @param pText le texte à afficher</a>
+<span class="sourceLineNo">256</span><a id="line.256">     */</a>
+<span class="sourceLineNo">257</span><a id="line.257">    public void writeInventory( final String pText )</a>
+<span class="sourceLineNo">258</span><a id="line.258">    {</a>
+<span class="sourceLineNo">259</span><a id="line.259">        this.aInventory.setText(pText);</a>
+<span class="sourceLineNo">260</span><a id="line.260">        this.aMyFrame.pack(); // permet de charger le texte pour l'afficher</a>
+<span class="sourceLineNo">261</span><a id="line.261">    } // writeInventory(.)</a>
+<span class="sourceLineNo">262</span><a id="line.262"></a>
+<span class="sourceLineNo">263</span><a id="line.263">    /**</a>
+<span class="sourceLineNo">264</span><a id="line.264">     * Porcédure qui permet d'activer ou de désactiver le bouton </a>
+<span class="sourceLineNo">265</span><a id="line.265">     * d'inventaire pour le rendre utilisable ou non</a>
+<span class="sourceLineNo">266</span><a id="line.266">     * @param pEnable le booléen qui indique si le bouton sera actif ou non</a>
+<span class="sourceLineNo">267</span><a id="line.267">     */</a>
+<span class="sourceLineNo">268</span><a id="line.268">    public void setEnableInventoryB( final boolean pEnable )</a>
+<span class="sourceLineNo">269</span><a id="line.269">    {</a>
+<span class="sourceLineNo">270</span><a id="line.270">        this.aButtonTab[2].setEnabled(pEnable);</a>
+<span class="sourceLineNo">271</span><a id="line.271">    } // setEnableInventoryB(.)</a>
+<span class="sourceLineNo">272</span><a id="line.272"></a>
+<span class="sourceLineNo">273</span><a id="line.273">    /**</a>
+<span class="sourceLineNo">274</span><a id="line.274">     * Porcédure qui permet d'activer ou de désactiver le bouton </a>
+<span class="sourceLineNo">275</span><a id="line.275">     * de retour pour le rendre utilisable ou non</a>
+<span class="sourceLineNo">276</span><a id="line.276">     * @param pEnable le booléen qui indique si le bouton sera actif ou non</a>
+<span class="sourceLineNo">277</span><a id="line.277">     */</a>
+<span class="sourceLineNo">278</span><a id="line.278">    public void setEnableBackB( final boolean pEnable )</a>
+<span class="sourceLineNo">279</span><a id="line.279">    {</a>
+<span class="sourceLineNo">280</span><a id="line.280">        this.aButtonTab[1].setEnabled(pEnable);</a>
+<span class="sourceLineNo">281</span><a id="line.281">    } // setEnableBackB(.)</a>
+<span class="sourceLineNo">282</span><a id="line.282"></a>
+<span class="sourceLineNo">283</span><a id="line.283">    /**</a>
+<span class="sourceLineNo">284</span><a id="line.284">     * Porcédure qui vérifie le type de l'action passé en paramètre et réagis </a>
+<span class="sourceLineNo">285</span><a id="line.285">     * en conséquence en fonction de s'il s'agit d'un clic ou d'un appuie </a>
+<span class="sourceLineNo">286</span><a id="line.286">     * sur 'entré' dans le clavier</a>
+<span class="sourceLineNo">287</span><a id="line.287">     * @param pE l'action a vérifié</a>
+<span class="sourceLineNo">288</span><a id="line.288">     */</a>
+<span class="sourceLineNo">289</span><a id="line.289">    public void actionPerformed( final ActionEvent pE ) </a>
+<span class="sourceLineNo">290</span><a id="line.290">    {</a>
+<span class="sourceLineNo">291</span><a id="line.291">        // no need to check the type of action at the moment</a>
+<span class="sourceLineNo">292</span><a id="line.292">        // because there is only one possible action (text input) :</a>
+<span class="sourceLineNo">293</span><a id="line.293">        for (int i=0; i&lt;this.aButtonTab.length; i++) {</a>
+<span class="sourceLineNo">294</span><a id="line.294">            if ( pE.getSource() == this.aButtonTab[i] ){</a>
+<span class="sourceLineNo">295</span><a id="line.295">                this.aEngine.interpretCommand(  pE.getActionCommand() );</a>
+<span class="sourceLineNo">296</span><a id="line.296">                return;</a>
+<span class="sourceLineNo">297</span><a id="line.297">            } </a>
+<span class="sourceLineNo">298</span><a id="line.298">        }</a>
+<span class="sourceLineNo">299</span><a id="line.299">        this.processCommand(); // never suppress this line</a>
+<span class="sourceLineNo">300</span><a id="line.300">    } // actionPerformed(.)</a>
+<span class="sourceLineNo">301</span><a id="line.301"></a>
+<span class="sourceLineNo">302</span><a id="line.302">    /**</a>
+<span class="sourceLineNo">303</span><a id="line.303">     * Procédure qui lis la commande et l'excécute </a>
+<span class="sourceLineNo">304</span><a id="line.304">     */</a>
+<span class="sourceLineNo">305</span><a id="line.305">    private void processCommand()</a>
+<span class="sourceLineNo">306</span><a id="line.306">    {</a>
+<span class="sourceLineNo">307</span><a id="line.307">        String vInput = this.aEntryField.getText();</a>
+<span class="sourceLineNo">308</span><a id="line.308">        this.aEntryField.setText( "" );</a>
+<span class="sourceLineNo">309</span><a id="line.309"></a>
+<span class="sourceLineNo">310</span><a id="line.310">        this.aEngine.interpretCommand( vInput );</a>
+<span class="sourceLineNo">311</span><a id="line.311">    } // processCommand()</a>
+<span class="sourceLineNo">312</span><a id="line.312"></a>
+<span class="sourceLineNo">313</span><a id="line.313">} // pkg_game.UserInterface</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

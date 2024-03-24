@@ -1,0 +1,535 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package pkg_game;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import pkg_game.UserInterface;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import pkg_item.Beamer;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import pkg_item.Item;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import pkg_item.ItemList;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import pkg_room.Door;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import pkg_room.Room;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import pkg_room.TransporterRoom;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import java.util.Stack;</a>
+<span class="sourceLineNo">011</span><a id="line.11">/**</a>
+<span class="sourceLineNo">012</span><a id="line.12"> * La classe Player réprésente le joueur et gère tout ce qui lui concerne</a>
+<span class="sourceLineNo">013</span><a id="line.13"> * </a>
+<span class="sourceLineNo">014</span><a id="line.14"> * @author MBIAPA KETCHECKMEN Joël Trésor</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * @version 2021.05</a>
+<span class="sourceLineNo">016</span><a id="line.16"> */</a>
+<span class="sourceLineNo">017</span><a id="line.17">public class Player</a>
+<span class="sourceLineNo">018</span><a id="line.18">{</a>
+<span class="sourceLineNo">019</span><a id="line.19">    private String aPlayerName;</a>
+<span class="sourceLineNo">020</span><a id="line.20">    private int aMaxWeight;</a>
+<span class="sourceLineNo">021</span><a id="line.21">    private Room aCurrentRoom;</a>
+<span class="sourceLineNo">022</span><a id="line.22">    private Stack&lt;Room&gt; aPreviousRooms;</a>
+<span class="sourceLineNo">023</span><a id="line.23">    private UserInterface aGui;</a>
+<span class="sourceLineNo">024</span><a id="line.24">    private ItemList aInventory;</a>
+<span class="sourceLineNo">025</span><a id="line.25"></a>
+<span class="sourceLineNo">026</span><a id="line.26">    /**</a>
+<span class="sourceLineNo">027</span><a id="line.27">     * Constructeur qui initialise le nom du joueur et </a>
+<span class="sourceLineNo">028</span><a id="line.28">     * le poids maximum qu'il peut porter</a>
+<span class="sourceLineNo">029</span><a id="line.29">     * @param pPlayerName le nom du joueur</a>
+<span class="sourceLineNo">030</span><a id="line.30">     * @param pMaxWeight le poids maximum à emporté par le joueur</a>
+<span class="sourceLineNo">031</span><a id="line.31">     */</a>
+<span class="sourceLineNo">032</span><a id="line.32">    public Player( final String pPlayerName, final int pMaxWeight )</a>
+<span class="sourceLineNo">033</span><a id="line.33">    {</a>
+<span class="sourceLineNo">034</span><a id="line.34">        this.aPlayerName = pPlayerName;</a>
+<span class="sourceLineNo">035</span><a id="line.35">        this.aMaxWeight = pMaxWeight;</a>
+<span class="sourceLineNo">036</span><a id="line.36">        this.aPreviousRooms = new Stack&lt;Room&gt;();</a>
+<span class="sourceLineNo">037</span><a id="line.37">        this.aInventory = new ItemList();</a>
+<span class="sourceLineNo">038</span><a id="line.38">    } // Player(..)</a>
+<span class="sourceLineNo">039</span><a id="line.39"></a>
+<span class="sourceLineNo">040</span><a id="line.40">    /**</a>
+<span class="sourceLineNo">041</span><a id="line.41">     * Accesseur qui retourne le nom du joueur</a>
+<span class="sourceLineNo">042</span><a id="line.42">     * @return le nom du joueur</a>
+<span class="sourceLineNo">043</span><a id="line.43">     */</a>
+<span class="sourceLineNo">044</span><a id="line.44">    public String getPlayerName()</a>
+<span class="sourceLineNo">045</span><a id="line.45">    {</a>
+<span class="sourceLineNo">046</span><a id="line.46">        return this.aPlayerName;</a>
+<span class="sourceLineNo">047</span><a id="line.47">    } // getPlayerName()</a>
+<span class="sourceLineNo">048</span><a id="line.48"></a>
+<span class="sourceLineNo">049</span><a id="line.49">    /**</a>
+<span class="sourceLineNo">050</span><a id="line.50">     * Accesseur pour accéder au poids maximum d'objets </a>
+<span class="sourceLineNo">051</span><a id="line.51">     * que le joueur peut transporter</a>
+<span class="sourceLineNo">052</span><a id="line.52">     * @return le poids maximal</a>
+<span class="sourceLineNo">053</span><a id="line.53">     */</a>
+<span class="sourceLineNo">054</span><a id="line.54">    public int getMaxWeight()</a>
+<span class="sourceLineNo">055</span><a id="line.55">    {</a>
+<span class="sourceLineNo">056</span><a id="line.56">        return this.aMaxWeight;</a>
+<span class="sourceLineNo">057</span><a id="line.57">    } // getMaxWeight()</a>
+<span class="sourceLineNo">058</span><a id="line.58"></a>
+<span class="sourceLineNo">059</span><a id="line.59">    /**</a>
+<span class="sourceLineNo">060</span><a id="line.60">     * Accesseur qui permet d'avoir la pièce courante du joueur</a>
+<span class="sourceLineNo">061</span><a id="line.61">     * @return la pièce courante</a>
+<span class="sourceLineNo">062</span><a id="line.62">     */</a>
+<span class="sourceLineNo">063</span><a id="line.63">    public Room getCurrentRoom()</a>
+<span class="sourceLineNo">064</span><a id="line.64">    {</a>
+<span class="sourceLineNo">065</span><a id="line.65">        return this.aCurrentRoom;</a>
+<span class="sourceLineNo">066</span><a id="line.66">    } // getCurrentRoom()</a>
+<span class="sourceLineNo">067</span><a id="line.67"></a>
+<span class="sourceLineNo">068</span><a id="line.68">    /**</a>
+<span class="sourceLineNo">069</span><a id="line.69">     * Accesseur qui permet de retourner l'item de l'inventaire</a>
+<span class="sourceLineNo">070</span><a id="line.70">     * du joueur correspondant au nom passer en paramètre s'il</a>
+<span class="sourceLineNo">071</span><a id="line.71">     * existe</a>
+<span class="sourceLineNo">072</span><a id="line.72">     * @param pItemName le nom de l'item recherché</a>
+<span class="sourceLineNo">073</span><a id="line.73">     * @return l'item correspondant au nom passé en paramètre</a>
+<span class="sourceLineNo">074</span><a id="line.74">     */</a>
+<span class="sourceLineNo">075</span><a id="line.75">    public Item getInventoryItem( final String pItemName )</a>
+<span class="sourceLineNo">076</span><a id="line.76">    {</a>
+<span class="sourceLineNo">077</span><a id="line.77">        return this.aInventory.getItem(pItemName);</a>
+<span class="sourceLineNo">078</span><a id="line.78">    } // getInventoryItem(.)</a>
+<span class="sourceLineNo">079</span><a id="line.79"></a>
+<span class="sourceLineNo">080</span><a id="line.80">    /**</a>
+<span class="sourceLineNo">081</span><a id="line.81">     * Fonction qui retourne un chaine de caractère de l'inventaire du joueur</a>
+<span class="sourceLineNo">082</span><a id="line.82">     * @return les détails de l'inventaire du joueur, ainsi que l'espace encore disponnible</a>
+<span class="sourceLineNo">083</span><a id="line.83">     */</a>
+<span class="sourceLineNo">084</span><a id="line.84">    public String inventoryList()</a>
+<span class="sourceLineNo">085</span><a id="line.85">    {</a>
+<span class="sourceLineNo">086</span><a id="line.86">        int vAvailableWeight = this.getMaxWeight() - this.aInventory.getItemListWeight();</a>
+<span class="sourceLineNo">087</span><a id="line.87">        return this.aInventory.getItemList() + "Espace encore disponibles : " </a>
+<span class="sourceLineNo">088</span><a id="line.88">        + vAvailableWeight + " grammes\n";</a>
+<span class="sourceLineNo">089</span><a id="line.89">    } /// inventoryList()</a>
+<span class="sourceLineNo">090</span><a id="line.90"></a>
+<span class="sourceLineNo">091</span><a id="line.91">    /**</a>
+<span class="sourceLineNo">092</span><a id="line.92">     * Modificateur qui initialise l'attribut aGui</a>
+<span class="sourceLineNo">093</span><a id="line.93">     * @param pUserInterface l'interface de jeu</a>
+<span class="sourceLineNo">094</span><a id="line.94">     */</a>
+<span class="sourceLineNo">095</span><a id="line.95">    public void setGUI( final UserInterface pUserInterface )</a>
+<span class="sourceLineNo">096</span><a id="line.96">    {</a>
+<span class="sourceLineNo">097</span><a id="line.97">        this.aGui = pUserInterface;</a>
+<span class="sourceLineNo">098</span><a id="line.98">    } // setGUI(.)</a>
+<span class="sourceLineNo">099</span><a id="line.99"></a>
+<span class="sourceLineNo">100</span><a id="line.100">    /**</a>
+<span class="sourceLineNo">101</span><a id="line.101">     * Modificateur pour modifier la pièce courante dans laquel </a>
+<span class="sourceLineNo">102</span><a id="line.102">     * le joueur se trouve et la mémoriser</a>
+<span class="sourceLineNo">103</span><a id="line.103">     * @param pCurrentRoom la prochaine pièce</a>
+<span class="sourceLineNo">104</span><a id="line.104">     */</a>
+<span class="sourceLineNo">105</span><a id="line.105">    public void setCurrentRoom( final Room pCurrentRoom )</a>
+<span class="sourceLineNo">106</span><a id="line.106">    {</a>
+<span class="sourceLineNo">107</span><a id="line.107">        if( this.aCurrentRoom != null){</a>
+<span class="sourceLineNo">108</span><a id="line.108">            this.aPreviousRooms.push(this.aCurrentRoom);</a>
+<span class="sourceLineNo">109</span><a id="line.109">            this.aGui.setEnableBackB(true);</a>
+<span class="sourceLineNo">110</span><a id="line.110">        }</a>
+<span class="sourceLineNo">111</span><a id="line.111">        this.aCurrentRoom = pCurrentRoom;</a>
+<span class="sourceLineNo">112</span><a id="line.112">    } // setCurrentRoom(.)</a>
+<span class="sourceLineNo">113</span><a id="line.113"></a>
+<span class="sourceLineNo">114</span><a id="line.114">    /**</a>
+<span class="sourceLineNo">115</span><a id="line.115">     * Modificateur qui modifie le poids maximum que le joueur</a>
+<span class="sourceLineNo">116</span><a id="line.116">     * peut transporter</a>
+<span class="sourceLineNo">117</span><a id="line.117">     * @param pMaxWeight le nouveau poids maximum du joueur</a>
+<span class="sourceLineNo">118</span><a id="line.118">     */</a>
+<span class="sourceLineNo">119</span><a id="line.119">    private void setMaxWeight( final int pMaxWeight )</a>
+<span class="sourceLineNo">120</span><a id="line.120">    {</a>
+<span class="sourceLineNo">121</span><a id="line.121">        this.aMaxWeight = pMaxWeight;</a>
+<span class="sourceLineNo">122</span><a id="line.122">    } // setMawWeight()</a>
+<span class="sourceLineNo">123</span><a id="line.123"></a>
+<span class="sourceLineNo">124</span><a id="line.124">    /**</a>
+<span class="sourceLineNo">125</span><a id="line.125">     * Procédure qui retourne un message lorsque le joueur </a>
+<span class="sourceLineNo">126</span><a id="line.126">     * a manger</a>
+<span class="sourceLineNo">127</span><a id="line.127">     * @return le message indiquant que le joueur a mangé</a>
+<span class="sourceLineNo">128</span><a id="line.128">     */</a>
+<span class="sourceLineNo">129</span><a id="line.129">    public String eat()</a>
+<span class="sourceLineNo">130</span><a id="line.130">    {</a>
+<span class="sourceLineNo">131</span><a id="line.131">        return "Vous avez mangé, et maintenant vous n'avez plus faim.";</a>
+<span class="sourceLineNo">132</span><a id="line.132">    } // eat()</a>
+<span class="sourceLineNo">133</span><a id="line.133"></a>
+<span class="sourceLineNo">134</span><a id="line.134">    /**</a>
+<span class="sourceLineNo">135</span><a id="line.135">     * Procédure qui change la salle courante en permettant</a>
+<span class="sourceLineNo">136</span><a id="line.136">     * au joueur de revenir dans une salle déjà visitée</a>
+<span class="sourceLineNo">137</span><a id="line.137">     */</a>
+<span class="sourceLineNo">138</span><a id="line.138">    public void back()</a>
+<span class="sourceLineNo">139</span><a id="line.139">    {</a>
+<span class="sourceLineNo">140</span><a id="line.140">        if ( this.aPreviousRooms.empty() ){</a>
+<span class="sourceLineNo">141</span><a id="line.141">            this.aGui.setEnableBackB(false);</a>
+<span class="sourceLineNo">142</span><a id="line.142">            this.aGui.println("Vous n'avez pas mémoriser de trajet, par conséquent, il vous est impossible " </a>
+<span class="sourceLineNo">143</span><a id="line.143">                + "\nde retourner sur vos pas.");</a>
+<span class="sourceLineNo">144</span><a id="line.144">        } else {</a>
+<span class="sourceLineNo">145</span><a id="line.145">            if ( this.wasTransporterRoom() ){</a>
+<span class="sourceLineNo">146</span><a id="line.146">                this.aPreviousRooms.clear();</a>
+<span class="sourceLineNo">147</span><a id="line.147">                this.aGui.println("Vous venez d'une pièce transporteuse, vous n'avez pas mémorisez de trajet par conséquent !");</a>
+<span class="sourceLineNo">148</span><a id="line.148">                this.aGui.setEnableBackB(false);</a>
+<span class="sourceLineNo">149</span><a id="line.149">                return;</a>
+<span class="sourceLineNo">150</span><a id="line.150">            }</a>
+<span class="sourceLineNo">151</span><a id="line.151">            if ( this.aCurrentRoom.isExit(this.aPreviousRooms.peek()) ){</a>
+<span class="sourceLineNo">152</span><a id="line.152">                if ( this.getCurrentRoom() instanceof TransporterRoom ){</a>
+<span class="sourceLineNo">153</span><a id="line.153">                    TransporterRoom vRoom = (TransporterRoom)(this.getCurrentRoom());</a>
+<span class="sourceLineNo">154</span><a id="line.154">                    this.setCurrentRoom(vRoom.getExit("SudOuest"));</a>
+<span class="sourceLineNo">155</span><a id="line.155">                    this.aGui.println("Vous étiez dans une pièce transporteuse, sortir de cette pièce vous déplace aléatoirement !!");</a>
+<span class="sourceLineNo">156</span><a id="line.156">                    return;</a>
+<span class="sourceLineNo">157</span><a id="line.157">                }</a>
+<span class="sourceLineNo">158</span><a id="line.158">                this.aCurrentRoom = this.aPreviousRooms.pop();</a>
+<span class="sourceLineNo">159</span><a id="line.159">            } else {</a>
+<span class="sourceLineNo">160</span><a id="line.160">                this.aGui.println("Vous avez franchi une porte à sens unique. Il vous est impossible de retourner en arrière.");</a>
+<span class="sourceLineNo">161</span><a id="line.161">                this.aPreviousRooms.clear();</a>
+<span class="sourceLineNo">162</span><a id="line.162">                this.aGui.setEnableBackB(false);</a>
+<span class="sourceLineNo">163</span><a id="line.163">            }</a>
+<span class="sourceLineNo">164</span><a id="line.164">        }</a>
+<span class="sourceLineNo">165</span><a id="line.165">    } // back()</a>
+<span class="sourceLineNo">166</span><a id="line.166"></a>
+<span class="sourceLineNo">167</span><a id="line.167">    /**</a>
+<span class="sourceLineNo">168</span><a id="line.168">     * Fonction booléenne qui vérifie que la pièce précédente était ou non une Transporter Room</a>
+<span class="sourceLineNo">169</span><a id="line.169">     * @return vrai si la pièce précédente est une Transporter Room sinon retourne faux le cas échéant</a>
+<span class="sourceLineNo">170</span><a id="line.170">     */</a>
+<span class="sourceLineNo">171</span><a id="line.171">    private boolean wasTransporterRoom()</a>
+<span class="sourceLineNo">172</span><a id="line.172">    {</a>
+<span class="sourceLineNo">173</span><a id="line.173">        if ( this.aPreviousRooms.peek() instanceof TransporterRoom)return true;</a>
+<span class="sourceLineNo">174</span><a id="line.174">        else return false;</a>
+<span class="sourceLineNo">175</span><a id="line.175">    } // wasTranswasTransporterRoom()</a>
+<span class="sourceLineNo">176</span><a id="line.176"></a>
+<span class="sourceLineNo">177</span><a id="line.177">    /**</a>
+<span class="sourceLineNo">178</span><a id="line.178">     * Procédure qui permet d'ajouter un item à l'inventaire</a>
+<span class="sourceLineNo">179</span><a id="line.179">     * du joueur</a>
+<span class="sourceLineNo">180</span><a id="line.180">     * @param pItem l'item à ajouter</a>
+<span class="sourceLineNo">181</span><a id="line.181">     */</a>
+<span class="sourceLineNo">182</span><a id="line.182">    public void addInventoryItem( final Item pItem )</a>
+<span class="sourceLineNo">183</span><a id="line.183">    {</a>
+<span class="sourceLineNo">184</span><a id="line.184">        this.aInventory.addItemList(pItem);</a>
+<span class="sourceLineNo">185</span><a id="line.185">    } // addInventoryItem(.)</a>
+<span class="sourceLineNo">186</span><a id="line.186"></a>
+<span class="sourceLineNo">187</span><a id="line.187">    /**</a>
+<span class="sourceLineNo">188</span><a id="line.188">     * Procédure qui permet de retirer un item de </a>
+<span class="sourceLineNo">189</span><a id="line.189">     * l'inventaire du joueur</a>
+<span class="sourceLineNo">190</span><a id="line.190">     * @param pItemName le nom de l'item à retiré</a>
+<span class="sourceLineNo">191</span><a id="line.191">     */</a>
+<span class="sourceLineNo">192</span><a id="line.192">    private void removeInventoryItem( final String pItemName )</a>
+<span class="sourceLineNo">193</span><a id="line.193">    {</a>
+<span class="sourceLineNo">194</span><a id="line.194">        this.aInventory.removeItemList(pItemName);</a>
+<span class="sourceLineNo">195</span><a id="line.195">    } // removeInventoryItem(.)</a>
+<span class="sourceLineNo">196</span><a id="line.196"></a>
+<span class="sourceLineNo">197</span><a id="line.197">    /**</a>
+<span class="sourceLineNo">198</span><a id="line.198">     * Procédure qui permet au joueur de prendre un item</a>
+<span class="sourceLineNo">199</span><a id="line.199">     * disponible dans la pièce courante</a>
+<span class="sourceLineNo">200</span><a id="line.200">     * @param pItemName le nom de l'item à prendre</a>
+<span class="sourceLineNo">201</span><a id="line.201">     */</a>
+<span class="sourceLineNo">202</span><a id="line.202">    public void take( final String pItemName )</a>
+<span class="sourceLineNo">203</span><a id="line.203">    {</a>
+<span class="sourceLineNo">204</span><a id="line.204">        Item vItem = this.aCurrentRoom.getItem(pItemName);</a>
+<span class="sourceLineNo">205</span><a id="line.205">        if ( vItem != null ) {</a>
+<span class="sourceLineNo">206</span><a id="line.206">            if ( vItem.getItemName().equals("Bracelet") ){</a>
+<span class="sourceLineNo">207</span><a id="line.207">                this.setMaxWeight( 150 );</a>
+<span class="sourceLineNo">208</span><a id="line.208">            }</a>
+<span class="sourceLineNo">209</span><a id="line.209">            if ( this.canBeTake(vItem) ){</a>
+<span class="sourceLineNo">210</span><a id="line.210">                this.addInventoryItem(vItem);</a>
+<span class="sourceLineNo">211</span><a id="line.211">                this.aCurrentRoom.removeItem(pItemName);</a>
+<span class="sourceLineNo">212</span><a id="line.212">                this.aGui.println("Vous avez pris l'item : " + pItemName);</a>
+<span class="sourceLineNo">213</span><a id="line.213">                this.aGui.println(this.inventoryList());</a>
+<span class="sourceLineNo">214</span><a id="line.214">                this.aGui.setEnableInventoryB(true);</a>
+<span class="sourceLineNo">215</span><a id="line.215">            } else if( this.aInventory.getItem("Bracelet") == null ){</a>
+<span class="sourceLineNo">216</span><a id="line.216">                this.aGui.println("Vous ne pouvez pas prendre d'item tant que vous ne possèdez pas le Bracelet de Stockage.");</a>
+<span class="sourceLineNo">217</span><a id="line.217">            } else {</a>
+<span class="sourceLineNo">218</span><a id="line.218">                this.aGui.println("L'indicateur de poids de votre Bracelet de Stockage s'agite :"</a>
+<span class="sourceLineNo">219</span><a id="line.219">                    + "\nvous avez dépassez la capacité disponible dans l'espace dimensionnel !!" </a>
+<span class="sourceLineNo">220</span><a id="line.220">                    + "\nIl est impossible de prendre cet item au risque d'une saturation.");</a>
+<span class="sourceLineNo">221</span><a id="line.221">                this.aGui.setEnableInventoryB(true);</a>
+<span class="sourceLineNo">222</span><a id="line.222">            }</a>
+<span class="sourceLineNo">223</span><a id="line.223">        } else {</a>
+<span class="sourceLineNo">224</span><a id="line.224">            this.aGui.println("L'item que vous essayer " </a>
+<span class="sourceLineNo">225</span><a id="line.225">                + "de prendre n'existe pas dans cette pièce !");</a>
+<span class="sourceLineNo">226</span><a id="line.226">        }</a>
+<span class="sourceLineNo">227</span><a id="line.227">    } // take(.)</a>
+<span class="sourceLineNo">228</span><a id="line.228"></a>
+<span class="sourceLineNo">229</span><a id="line.229">    /**</a>
+<span class="sourceLineNo">230</span><a id="line.230">     * Procédure qui permet au joueur de déposer un item</a>
+<span class="sourceLineNo">231</span><a id="line.231">     * dans la pièce courante</a>
+<span class="sourceLineNo">232</span><a id="line.232">     * @param pItemName le nom de l'item à déposer</a>
+<span class="sourceLineNo">233</span><a id="line.233">     */</a>
+<span class="sourceLineNo">234</span><a id="line.234">    public void drop( final String pItemName )</a>
+<span class="sourceLineNo">235</span><a id="line.235">    {</a>
+<span class="sourceLineNo">236</span><a id="line.236">        Item vItem = this.getInventoryItem(pItemName);</a>
+<span class="sourceLineNo">237</span><a id="line.237"></a>
+<span class="sourceLineNo">238</span><a id="line.238">        if ( vItem != null ){</a>
+<span class="sourceLineNo">239</span><a id="line.239">            if( vItem.getItemName().equals("Bracelet") ){</a>
+<span class="sourceLineNo">240</span><a id="line.240">                this.aGui.println("Il vous est impossible de déposer votre inventaire !");</a>
+<span class="sourceLineNo">241</span><a id="line.241">                return;</a>
+<span class="sourceLineNo">242</span><a id="line.242">            }</a>
+<span class="sourceLineNo">243</span><a id="line.243"></a>
+<span class="sourceLineNo">244</span><a id="line.244">            this.aCurrentRoom.addItem(vItem);</a>
+<span class="sourceLineNo">245</span><a id="line.245">            this.removeInventoryItem(pItemName);</a>
+<span class="sourceLineNo">246</span><a id="line.246">            this.aGui.println("Vous avez déposer l'item : " + pItemName);</a>
+<span class="sourceLineNo">247</span><a id="line.247">            this.aGui.println(this.inventoryList());</a>
+<span class="sourceLineNo">248</span><a id="line.248">        } else {</a>
+<span class="sourceLineNo">249</span><a id="line.249">            this.aGui.println("Vous ne possédez pas l'item : " + pItemName);</a>
+<span class="sourceLineNo">250</span><a id="line.250">        }</a>
+<span class="sourceLineNo">251</span><a id="line.251">    } // drop(.)</a>
+<span class="sourceLineNo">252</span><a id="line.252"></a>
+<span class="sourceLineNo">253</span><a id="line.253">    /**</a>
+<span class="sourceLineNo">254</span><a id="line.254">     * Méthode booléen qui vérifie que l'item peut être pris par le joueur</a>
+<span class="sourceLineNo">255</span><a id="line.255">     * @param pItem item sur lequel la vérifiaction sera faite</a>
+<span class="sourceLineNo">256</span><a id="line.256">     * @return retourne false si le poids de l'item plus celui de l'inventaire est </a>
+<span class="sourceLineNo">257</span><a id="line.257">     * supérieur au poids maximum supporter par le joueur, sinon retourne true</a>
+<span class="sourceLineNo">258</span><a id="line.258">     */</a>
+<span class="sourceLineNo">259</span><a id="line.259">    private boolean canBeTake( final Item pItem )</a>
+<span class="sourceLineNo">260</span><a id="line.260">    {</a>
+<span class="sourceLineNo">261</span><a id="line.261">        int vItemsWeight = this.aInventory.getItemListWeight() + pItem.getItemWeight();</a>
+<span class="sourceLineNo">262</span><a id="line.262">        if ( vItemsWeight &gt; this.getMaxWeight() ) return false;</a>
+<span class="sourceLineNo">263</span><a id="line.263">        return true;</a>
+<span class="sourceLineNo">264</span><a id="line.264">    } // canBeTake()</a>
+<span class="sourceLineNo">265</span><a id="line.265"></a>
+<span class="sourceLineNo">266</span><a id="line.266">    /**</a>
+<span class="sourceLineNo">267</span><a id="line.267">     * Procédure qui double le poids maximum que le joueur peut transporter</a>
+<span class="sourceLineNo">268</span><a id="line.268">     */</a>
+<span class="sourceLineNo">269</span><a id="line.269">    private void doubleMaxWeight()</a>
+<span class="sourceLineNo">270</span><a id="line.270">    {</a>
+<span class="sourceLineNo">271</span><a id="line.271">        this.aMaxWeight = 2*this.getMaxWeight();</a>
+<span class="sourceLineNo">272</span><a id="line.272">    } // doubleMaxWeight()</a>
+<span class="sourceLineNo">273</span><a id="line.273"></a>
+<span class="sourceLineNo">274</span><a id="line.274">    /**</a>
+<span class="sourceLineNo">275</span><a id="line.275">     * Procédure qui vérifie que l'item associé au nom passer en paramètre peut</a>
+<span class="sourceLineNo">276</span><a id="line.276">     * être utiliser et réalise l'action que l'item es censé faire</a>
+<span class="sourceLineNo">277</span><a id="line.277">     * @param pItemName le nom de l'item que le joueur veut utiliser</a>
+<span class="sourceLineNo">278</span><a id="line.278">     */</a>
+<span class="sourceLineNo">279</span><a id="line.279">    public void use( final String pItemName )</a>
+<span class="sourceLineNo">280</span><a id="line.280">    {</a>
+<span class="sourceLineNo">281</span><a id="line.281">        Item vItem = this.getInventoryItem(pItemName);</a>
+<span class="sourceLineNo">282</span><a id="line.282"></a>
+<span class="sourceLineNo">283</span><a id="line.283">        if ( vItem != null ){</a>
+<span class="sourceLineNo">284</span><a id="line.284">            if ( pItemName.equals("Parchemin") ){</a>
+<span class="sourceLineNo">285</span><a id="line.285">                this.doubleMaxWeight();</a>
+<span class="sourceLineNo">286</span><a id="line.286">                this.removeInventoryItem(pItemName);</a>
+<span class="sourceLineNo">287</span><a id="line.287">                this.aGui.println("Le Parchemin entre en résonnance avec votre Bracelet de Stockage."</a>
+<span class="sourceLineNo">288</span><a id="line.288">                    + "\nUne lueur vous aveugle ! La capacité de votre Bracelet viens d'être doubler !!");</a>
+<span class="sourceLineNo">289</span><a id="line.289">                //this.aGui.println(this.inventory());</a>
+<span class="sourceLineNo">290</span><a id="line.290">            } else if ( pItemName.equals("Rune") ){</a>
+<span class="sourceLineNo">291</span><a id="line.291">                Beamer vBeamer = (Beamer)(vItem);</a>
+<span class="sourceLineNo">292</span><a id="line.292">                if ( this.getCurrentRoom().equals(vBeamer.getBeamerRoom()) ){</a>
+<span class="sourceLineNo">293</span><a id="line.293">                    this.aGui.println("Vous devez effectuez un déplacement avant de vous téléporter au risque de perdre définitivement la Rune");</a>
+<span class="sourceLineNo">294</span><a id="line.294">                    return;</a>
+<span class="sourceLineNo">295</span><a id="line.295">                }</a>
+<span class="sourceLineNo">296</span><a id="line.296">                this.fireBeamer(vBeamer);</a>
+<span class="sourceLineNo">297</span><a id="line.297">                this.aGui.println("Vous avez été téléporter dans la pièce mémorisé lors du chargement." </a>
+<span class="sourceLineNo">298</span><a id="line.298">                    + "\nLa Rune de téléportation perd de son éclat, elle vient de se briser !!!");</a>
+<span class="sourceLineNo">299</span><a id="line.299">                //this.aGui.println(this.inventory());</a>
+<span class="sourceLineNo">300</span><a id="line.300">            } else if ( pItemName.equals("Talisman") ){</a>
+<span class="sourceLineNo">301</span><a id="line.301">                if ( vItem instanceof Beamer ){</a>
+<span class="sourceLineNo">302</span><a id="line.302">                    Beamer vBeamer = (Beamer)(vItem);</a>
+<span class="sourceLineNo">303</span><a id="line.303">                    this.fireBeamer(vBeamer);</a>
+<span class="sourceLineNo">304</span><a id="line.304">                    this.aGui.println("Vous avez été téléporter vers le lieu choisi par le Créateur."</a>
+<span class="sourceLineNo">305</span><a id="line.305">                        + "\nLe Talisman de téléportation s'efface de la réalité.");</a>
+<span class="sourceLineNo">306</span><a id="line.306">                }  else {</a>
+<span class="sourceLineNo">307</span><a id="line.307">                    this.aGui.println("Vous possedez une version incomplète du Talisman : le Plastron."</a>
+<span class="sourceLineNo">308</span><a id="line.308">                        + "\nRéunissez les pièces manquantes et assemblez le Talisman pour obtenir une version complète.");</a>
+<span class="sourceLineNo">309</span><a id="line.309">                }</a>
+<span class="sourceLineNo">310</span><a id="line.310">            }else {</a>
+<span class="sourceLineNo">311</span><a id="line.311">                this.aGui.println("Vous pouvez seulement utiliser un téléporteur ou un item d'augmentation de stockage");</a>
+<span class="sourceLineNo">312</span><a id="line.312">            }</a>
+<span class="sourceLineNo">313</span><a id="line.313">        } else {</a>
+<span class="sourceLineNo">314</span><a id="line.314">            this.aGui.println("L'item que vous essayer d'utiliser ne se trouve pas dans votre Bracelet.");</a>
+<span class="sourceLineNo">315</span><a id="line.315">        }</a>
+<span class="sourceLineNo">316</span><a id="line.316">    } // use(.)</a>
+<span class="sourceLineNo">317</span><a id="line.317"></a>
+<span class="sourceLineNo">318</span><a id="line.318">    /**</a>
+<span class="sourceLineNo">319</span><a id="line.319">     * Procédure privée qui permet d'utiliser le beamer</a>
+<span class="sourceLineNo">320</span><a id="line.320">     * @param pBeamer le téléporteur à utiliser</a>
+<span class="sourceLineNo">321</span><a id="line.321">     */</a>
+<span class="sourceLineNo">322</span><a id="line.322">    private void fireBeamer( final Beamer pBeamer ) // crée pour éviter la dupplication de code</a>
+<span class="sourceLineNo">323</span><a id="line.323">    {</a>
+<span class="sourceLineNo">324</span><a id="line.324">        this.aCurrentRoom = pBeamer.getBeamerRoom();</a>
+<span class="sourceLineNo">325</span><a id="line.325">        this.removeInventoryItem(pBeamer.getItemName());</a>
+<span class="sourceLineNo">326</span><a id="line.326">        this.aPreviousRooms.clear();</a>
+<span class="sourceLineNo">327</span><a id="line.327">    } // fireBeamer(.)</a>
+<span class="sourceLineNo">328</span><a id="line.328"></a>
+<span class="sourceLineNo">329</span><a id="line.329">    /**</a>
+<span class="sourceLineNo">330</span><a id="line.330">     * Procédure qui permet de charger un téléporteur si le joueur est en possession de l'item</a>
+<span class="sourceLineNo">331</span><a id="line.331">     * passe en paramètre</a>
+<span class="sourceLineNo">332</span><a id="line.332">     * @param pBeamerName le nom de l'item à charger</a>
+<span class="sourceLineNo">333</span><a id="line.333">     */</a>
+<span class="sourceLineNo">334</span><a id="line.334">    public void chargeBeamer( final String pBeamerName )</a>
+<span class="sourceLineNo">335</span><a id="line.335">    {</a>
+<span class="sourceLineNo">336</span><a id="line.336">        Item vItem = this.getInventoryItem(pBeamerName);</a>
+<span class="sourceLineNo">337</span><a id="line.337"></a>
+<span class="sourceLineNo">338</span><a id="line.338">        if ( vItem != null ){ //le joueur possède l'item dans son inventaire</a>
+<span class="sourceLineNo">339</span><a id="line.339">            //le joueur possède un télépoteur</a>
+<span class="sourceLineNo">340</span><a id="line.340">            if ( vItem instanceof Beamer ){ // vérifie que vItem est une instance de la classe pkg_item.Beamer</a>
+<span class="sourceLineNo">341</span><a id="line.341">                Beamer vBeamer = (Beamer)(vItem);</a>
+<span class="sourceLineNo">342</span><a id="line.342">                if ( vBeamer.getBeamerRoom() == null ){</a>
+<span class="sourceLineNo">343</span><a id="line.343">                    vBeamer.setBeamerRoom(this.getCurrentRoom());</a>
+<span class="sourceLineNo">344</span><a id="line.344">                    this.aGui.println("Vous avez charger le téléporteur, il a mémoriser la pièce ou vous vous trouvez actuellement !");</a>
+<span class="sourceLineNo">345</span><a id="line.345">                } else {</a>
+<span class="sourceLineNo">346</span><a id="line.346">                    if ( vBeamer.getItemName().equals("Talisman") ){</a>
+<span class="sourceLineNo">347</span><a id="line.347">                        this.aGui.println("Le Talisman de téléportation, ne peut être chargé puisqu'il vous téléportera"</a>
+<span class="sourceLineNo">348</span><a id="line.348">                            + "\nvers le lieu prédéfini lors de sa création. Il a été charger par le Sorcier Suprême l'ayant fabriqué.");</a>
+<span class="sourceLineNo">349</span><a id="line.349">                        return;</a>
+<span class="sourceLineNo">350</span><a id="line.350">                    }</a>
+<span class="sourceLineNo">351</span><a id="line.351">                    this.aGui.println("L'item " + pBeamerName + " est déjà chargé !");</a>
+<span class="sourceLineNo">352</span><a id="line.352">                }</a>
+<span class="sourceLineNo">353</span><a id="line.353">            } else {</a>
+<span class="sourceLineNo">354</span><a id="line.354">                this.aGui.println("Vous pouvez seulement charger un téléporteur");</a>
+<span class="sourceLineNo">355</span><a id="line.355">            }</a>
+<span class="sourceLineNo">356</span><a id="line.356">        } else {</a>
+<span class="sourceLineNo">357</span><a id="line.357">            this.aGui.println("Vous ne possèdez pas l'item : " + pBeamerName);</a>
+<span class="sourceLineNo">358</span><a id="line.358">        }</a>
+<span class="sourceLineNo">359</span><a id="line.359">    } // chargeBeamer(.)</a>
+<span class="sourceLineNo">360</span><a id="line.360"></a>
+<span class="sourceLineNo">361</span><a id="line.361">    /**</a>
+<span class="sourceLineNo">362</span><a id="line.362">     * Procédure qui vérifie que le joueur possède son inventaire puis affiche </a>
+<span class="sourceLineNo">363</span><a id="line.363">     * les détails de ce dernière dans la pannel associé</a>
+<span class="sourceLineNo">364</span><a id="line.364">     */</a>
+<span class="sourceLineNo">365</span><a id="line.365">    public void inventory()</a>
+<span class="sourceLineNo">366</span><a id="line.366">    {</a>
+<span class="sourceLineNo">367</span><a id="line.367">        if ( this.getInventoryItem("Bracelet") != null ){</a>
+<span class="sourceLineNo">368</span><a id="line.368">            this.aGui.inverseVisibility();</a>
+<span class="sourceLineNo">369</span><a id="line.369">            this.aGui.fontInventoryPanel();</a>
+<span class="sourceLineNo">370</span><a id="line.370">            this.aGui.writeInventory(this.inventoryList());</a>
+<span class="sourceLineNo">371</span><a id="line.371">        } else {</a>
+<span class="sourceLineNo">372</span><a id="line.372">            this.aGui.println("Vous ne possédez pas l'inventaire : allez prendre le " + "\"" + "Bracelet" + "\"" + " !");</a>
+<span class="sourceLineNo">373</span><a id="line.373">        }</a>
+<span class="sourceLineNo">374</span><a id="line.374">    } // inventory()</a>
+<span class="sourceLineNo">375</span><a id="line.375"></a>
+<span class="sourceLineNo">376</span><a id="line.376">    /**</a>
+<span class="sourceLineNo">377</span><a id="line.377">     * Procédure qui permet de regarder les détails de l'item passer en paramètre</a>
+<span class="sourceLineNo">378</span><a id="line.378">     * dans l'inventaire si le joueur le possède</a>
+<span class="sourceLineNo">379</span><a id="line.379">     * @param pItemName le nom de l'item à inspecter</a>
+<span class="sourceLineNo">380</span><a id="line.380">     */</a>
+<span class="sourceLineNo">381</span><a id="line.381">    public void inspectItem( final String pItemName )</a>
+<span class="sourceLineNo">382</span><a id="line.382">    {</a>
+<span class="sourceLineNo">383</span><a id="line.383">        Item vItem = this.getInventoryItem(pItemName);</a>
+<span class="sourceLineNo">384</span><a id="line.384">        if ( this.getInventoryItem("Bracelet") != null ){</a>
+<span class="sourceLineNo">385</span><a id="line.385"></a>
+<span class="sourceLineNo">386</span><a id="line.386">            if ( vItem != null ){</a>
+<span class="sourceLineNo">387</span><a id="line.387">                this.aGui.visibilityInventory(true);</a>
+<span class="sourceLineNo">388</span><a id="line.388">                this.aGui.fontInventoryPanel();</a>
+<span class="sourceLineNo">389</span><a id="line.389">                this.aGui.writeInventory("Vous fouillez dans la base de données de votre Bracelet."</a>
+<span class="sourceLineNo">390</span><a id="line.390">                    + "\nIl vous montre les détails de l'item : " + pItemName +</a>
+<span class="sourceLineNo">391</span><a id="line.391">                    "\n\n"  + vItem.getLongItemDescription());</a>
+<span class="sourceLineNo">392</span><a id="line.392">            } else {</a>
+<span class="sourceLineNo">393</span><a id="line.393">                this.aGui.println("Votre Bracelet de Stockage indique une erreur : vous ne possédez pas l'item dont vous chercher les détails.");</a>
+<span class="sourceLineNo">394</span><a id="line.394">                this.aGui.visibilityInventory(false);</a>
+<span class="sourceLineNo">395</span><a id="line.395">            }</a>
+<span class="sourceLineNo">396</span><a id="line.396">        } else { </a>
+<span class="sourceLineNo">397</span><a id="line.397">            this.aGui.println("Vous devez posseder le Bracelet de Stockage afin d'inspecter un item dans votre inventaire.");</a>
+<span class="sourceLineNo">398</span><a id="line.398">        }</a>
+<span class="sourceLineNo">399</span><a id="line.399">    } // inspectItem(.)</a>
+<span class="sourceLineNo">400</span><a id="line.400"></a>
+<span class="sourceLineNo">401</span><a id="line.401">    /**</a>
+<span class="sourceLineNo">402</span><a id="line.402">     * Fonction booleénne qui vérifie que le joueur possède les items nécéssaire pour assembler l'item qui </a>
+<span class="sourceLineNo">403</span><a id="line.403">     * à pour nom celui passé en paramètre</a>
+<span class="sourceLineNo">404</span><a id="line.404">     * @param pItemName le nom de l'item à assembler</a>
+<span class="sourceLineNo">405</span><a id="line.405">     * @return vrai si l'item est assemblé, sinon retorne faux lorsque le joueur ne peux pas assembler l'item</a>
+<span class="sourceLineNo">406</span><a id="line.406">     */</a>
+<span class="sourceLineNo">407</span><a id="line.407">    public boolean build( final String pItemName ) </a>
+<span class="sourceLineNo">408</span><a id="line.408">    {</a>
+<span class="sourceLineNo">409</span><a id="line.409">        Item vItem = this.getInventoryItem(pItemName);</a>
+<span class="sourceLineNo">410</span><a id="line.410"></a>
+<span class="sourceLineNo">411</span><a id="line.411">        if ( vItem != null ){</a>
+<span class="sourceLineNo">412</span><a id="line.412">            if ( vItem.getItemName().equals("Plastron") ){</a>
+<span class="sourceLineNo">413</span><a id="line.413">                if ( this.getInventoryItem("Fiole") != null &amp;&amp; this.getInventoryItem("Vanadinite") != null ){</a>
+<span class="sourceLineNo">414</span><a id="line.414">                    this.removeInventoryItem("Fiole");</a>
+<span class="sourceLineNo">415</span><a id="line.415">                    this.removeInventoryItem("Vanadinite");</a>
+<span class="sourceLineNo">416</span><a id="line.416">                    this.removeInventoryItem("Plastron");</a>
+<span class="sourceLineNo">417</span><a id="line.417">                    this.aGui.println("Vous avez assemblé le Plastron, il est passé de l'état incomplet, à l'état complet.");</a>
+<span class="sourceLineNo">418</span><a id="line.418">                    this.aGui.println("Vous êtes désormais en possession d'un Talisman de téléportation complet.\nIl est prêt à être utilisé.");</a>
+<span class="sourceLineNo">419</span><a id="line.419">                    return true;</a>
+<span class="sourceLineNo">420</span><a id="line.420">                } else {</a>
+<span class="sourceLineNo">421</span><a id="line.421">                    this.aGui.println("Il vous manque la Fiole d'Énergie Lunaire ou la Vanadinite dans votre inventaire.");</a>
+<span class="sourceLineNo">422</span><a id="line.422">                    return false;</a>
+<span class="sourceLineNo">423</span><a id="line.423">                }</a>
+<span class="sourceLineNo">424</span><a id="line.424">            } else {</a>
+<span class="sourceLineNo">425</span><a id="line.425">                this.aGui.println("Vous pouvez seulement assemblez un Plastron de téléportation incomplet !");</a>
+<span class="sourceLineNo">426</span><a id="line.426">                return false;</a>
+<span class="sourceLineNo">427</span><a id="line.427">            }</a>
+<span class="sourceLineNo">428</span><a id="line.428">        } else {</a>
+<span class="sourceLineNo">429</span><a id="line.429">            this.aGui.println("Vous ne possédez pas l'item dans votre inventaire.");</a>
+<span class="sourceLineNo">430</span><a id="line.430">            return false;</a>
+<span class="sourceLineNo">431</span><a id="line.431">        }</a>
+<span class="sourceLineNo">432</span><a id="line.432">    } // build(.)</a>
+<span class="sourceLineNo">433</span><a id="line.433"></a>
+<span class="sourceLineNo">434</span><a id="line.434">    /**</a>
+<span class="sourceLineNo">435</span><a id="line.435">     * Procédure qui permet d'ouvrir la porte qui se trouve dans la direction passé en paramètre</a>
+<span class="sourceLineNo">436</span><a id="line.436">     * si il y a une porte</a>
+<span class="sourceLineNo">437</span><a id="line.437">     * @param pDirection la direction dans laquel on veut ouvrir une porte</a>
+<span class="sourceLineNo">438</span><a id="line.438">     */</a>
+<span class="sourceLineNo">439</span><a id="line.439">    public void openDoor( final String pDirection )</a>
+<span class="sourceLineNo">440</span><a id="line.440">    {</a>
+<span class="sourceLineNo">441</span><a id="line.441">        Door vDoor = this.getCurrentRoom().getDoor(pDirection); // la porte dans la direction souhaiter</a>
+<span class="sourceLineNo">442</span><a id="line.442"></a>
+<span class="sourceLineNo">443</span><a id="line.443">        if ( vDoor != null ){ // si il y a une porte dans la direction demandé</a>
+<span class="sourceLineNo">444</span><a id="line.444">            if ( !vDoor.getCanBeCrossed() ){ // si la porte ne peut pas être traversée</a>
+<span class="sourceLineNo">445</span><a id="line.445">                Item vKeyDoor = vDoor.getKeyDoor(); // la clé de la porte</a>
+<span class="sourceLineNo">446</span><a id="line.446">                Item vKeyInventory = this.getInventoryItem(vKeyDoor.getItemName()); // la clé de la porte dans l'inventaire </a>
+<span class="sourceLineNo">447</span><a id="line.447"></a>
+<span class="sourceLineNo">448</span><a id="line.448">                if ( vKeyInventory != null ){ // le joueur possède la clé de la porte dans son inventaire</a>
+<span class="sourceLineNo">449</span><a id="line.449">                    vDoor.setCanBeCrossed(true);</a>
+<span class="sourceLineNo">450</span><a id="line.450">                    this.aGui.println("La porte dans la direction " + "\"" + pDirection + "\"" + " est maintenant dévérouillé.");</a>
+<span class="sourceLineNo">451</span><a id="line.451">                } else {</a>
+<span class="sourceLineNo">452</span><a id="line.452">                    this.aGui.println("Vous devez récupérer la clé " + "(" + vKeyDoor.getItemName() + ")" + " de la porte pour pouvoir l'ouvrir !");</a>
+<span class="sourceLineNo">453</span><a id="line.453">                }</a>
+<span class="sourceLineNo">454</span><a id="line.454">            } else {</a>
+<span class="sourceLineNo">455</span><a id="line.455">                this.aGui.println("Cette porte est déjà ouverte !");</a>
+<span class="sourceLineNo">456</span><a id="line.456">            }</a>
+<span class="sourceLineNo">457</span><a id="line.457">        } else {</a>
+<span class="sourceLineNo">458</span><a id="line.458">            this.aGui.println("Il n'y a pas de porte vérouillée dans cette direction.");</a>
+<span class="sourceLineNo">459</span><a id="line.459">        }</a>
+<span class="sourceLineNo">460</span><a id="line.460">    } // openDoor(.)</a>
+<span class="sourceLineNo">461</span><a id="line.461">} // Player</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

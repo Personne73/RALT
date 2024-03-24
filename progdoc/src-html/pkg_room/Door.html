@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package pkg_room;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3"> </a>
+<span class="sourceLineNo">004</span><a id="line.4"></a>
+<span class="sourceLineNo">005</span><a id="line.5">import pkg_item.Item;</a>
+<span class="sourceLineNo">006</span><a id="line.6">/**</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * La classe Door permet de créer des portes dans notre jeu</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * </a>
+<span class="sourceLineNo">009</span><a id="line.9"> * @author MBIAPA KETCHECKMEN Joël Trésor</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * @version 2021.05</a>
+<span class="sourceLineNo">011</span><a id="line.11"> */</a>
+<span class="sourceLineNo">012</span><a id="line.12">public class Door</a>
+<span class="sourceLineNo">013</span><a id="line.13">{</a>
+<span class="sourceLineNo">014</span><a id="line.14">    private boolean aCanBeCrossed;</a>
+<span class="sourceLineNo">015</span><a id="line.15">    private Item aKeyDoor;</a>
+<span class="sourceLineNo">016</span><a id="line.16">    </a>
+<span class="sourceLineNo">017</span><a id="line.17">    /**</a>
+<span class="sourceLineNo">018</span><a id="line.18">     * Constructeur naturel qui permet d'initialiser les attributs de la classe</a>
+<span class="sourceLineNo">019</span><a id="line.19">     * @param pCanBeCrossed vaut vrai si la porte peut être franchi, sinon faux</a>
+<span class="sourceLineNo">020</span><a id="line.20">     * @param pKeyDoor représente la clé de la porte</a>
+<span class="sourceLineNo">021</span><a id="line.21">     */</a>
+<span class="sourceLineNo">022</span><a id="line.22">    public Door( final boolean pCanBeCrossed, final Item pKeyDoor )</a>
+<span class="sourceLineNo">023</span><a id="line.23">    {</a>
+<span class="sourceLineNo">024</span><a id="line.24">        this.aCanBeCrossed = pCanBeCrossed;</a>
+<span class="sourceLineNo">025</span><a id="line.25">        this.aKeyDoor = pKeyDoor;</a>
+<span class="sourceLineNo">026</span><a id="line.26">    } // Door(..)</a>
+<span class="sourceLineNo">027</span><a id="line.27">    </a>
+<span class="sourceLineNo">028</span><a id="line.28">    /**</a>
+<span class="sourceLineNo">029</span><a id="line.29">     * Accesseur qui permet d'avoir la valeur contenu dans l'attribut </a>
+<span class="sourceLineNo">030</span><a id="line.30">     * aCanBeCrossed</a>
+<span class="sourceLineNo">031</span><a id="line.31">     * @return la valeur de l'attribut aCanBeCrossed</a>
+<span class="sourceLineNo">032</span><a id="line.32">     */</a>
+<span class="sourceLineNo">033</span><a id="line.33">    public boolean getCanBeCrossed()</a>
+<span class="sourceLineNo">034</span><a id="line.34">    {</a>
+<span class="sourceLineNo">035</span><a id="line.35">        return this.aCanBeCrossed;</a>
+<span class="sourceLineNo">036</span><a id="line.36">    } // getCanBeCrossed()</a>
+<span class="sourceLineNo">037</span><a id="line.37">    </a>
+<span class="sourceLineNo">038</span><a id="line.38">    /**</a>
+<span class="sourceLineNo">039</span><a id="line.39">     * Accesseur qui permet de savoir si la porte possède une clé ou non</a>
+<span class="sourceLineNo">040</span><a id="line.40">     * @return la valeur de l'attribut aCanBeCrossed</a>
+<span class="sourceLineNo">041</span><a id="line.41">     */</a>
+<span class="sourceLineNo">042</span><a id="line.42">    public Item getKeyDoor()</a>
+<span class="sourceLineNo">043</span><a id="line.43">    {</a>
+<span class="sourceLineNo">044</span><a id="line.44">        return this.aKeyDoor;</a>
+<span class="sourceLineNo">045</span><a id="line.45">    }  // getKeyDoor()</a>
+<span class="sourceLineNo">046</span><a id="line.46">    </a>
+<span class="sourceLineNo">047</span><a id="line.47">    /**</a>
+<span class="sourceLineNo">048</span><a id="line.48">     * Modificateur qui permet de changer la valeur contenue dans l'attribut</a>
+<span class="sourceLineNo">049</span><a id="line.49">     * aCanBeCrossed</a>
+<span class="sourceLineNo">050</span><a id="line.50">     * @param pCanBeCrossed la nouvelle valeur de l'attribut canBeCrossed</a>
+<span class="sourceLineNo">051</span><a id="line.51">     */</a>
+<span class="sourceLineNo">052</span><a id="line.52">    public void setCanBeCrossed( final boolean pCanBeCrossed )</a>
+<span class="sourceLineNo">053</span><a id="line.53">    {</a>
+<span class="sourceLineNo">054</span><a id="line.54">        this.aCanBeCrossed = pCanBeCrossed;</a>
+<span class="sourceLineNo">055</span><a id="line.55">    } // setCanBeCrossed(.)</a>
+<span class="sourceLineNo">056</span><a id="line.56">} // Door</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

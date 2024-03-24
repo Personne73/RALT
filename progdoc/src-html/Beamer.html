@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1"></a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">/**</a>
+<span class="sourceLineNo">004</span><a id="line.4"> * La classe pkg_item.Beamer permet la création d'items considérer comme téléporteur</a>
+<span class="sourceLineNo">005</span><a id="line.5"> * </a>
+<span class="sourceLineNo">006</span><a id="line.6"> * @author MBIAPA KETCHECKMEN Joël Trésor</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * @version 2021.05</a>
+<span class="sourceLineNo">008</span><a id="line.8"> */</a>
+<span class="sourceLineNo">009</span><a id="line.9">public class pkg_item.Beamer extends pkg_item.Item</a>
+<span class="sourceLineNo">010</span><a id="line.10">{</a>
+<span class="sourceLineNo">011</span><a id="line.11">    private pkg_room.pkg_room.pkg_room.Room aBeamerRoom;</a>
+<span class="sourceLineNo">012</span><a id="line.12">    </a>
+<span class="sourceLineNo">013</span><a id="line.13">    /**</a>
+<span class="sourceLineNo">014</span><a id="line.14">     * Constructeur qui initialise les attributs</a>
+<span class="sourceLineNo">015</span><a id="line.15">     * @param pItemName le nom de l'item</a>
+<span class="sourceLineNo">016</span><a id="line.16">     * @param pItemDescription la description de l'item</a>
+<span class="sourceLineNo">017</span><a id="line.17">     * @param pItemWeight le poids de l'item</a>
+<span class="sourceLineNo">018</span><a id="line.18">     * @param pItemPrice le prix de l'item</a>
+<span class="sourceLineNo">019</span><a id="line.19">     * @param pBeamerRoom la pièce à mémoriser par le beamer</a>
+<span class="sourceLineNo">020</span><a id="line.20">     */</a>
+<span class="sourceLineNo">021</span><a id="line.21">    public pkg_item.Beamer( final String pItemName, final String pItemDescription, </a>
+<span class="sourceLineNo">022</span><a id="line.22">                    final int pItemWeight, final int pItemPrice, final pkg_room.pkg_room.pkg_room.Room pBeamerRoom )</a>
+<span class="sourceLineNo">023</span><a id="line.23">    {</a>
+<span class="sourceLineNo">024</span><a id="line.24">        super(pItemName, pItemDescription, pItemWeight, pItemPrice);</a>
+<span class="sourceLineNo">025</span><a id="line.25">        this.aBeamerRoom = pBeamerRoom;</a>
+<span class="sourceLineNo">026</span><a id="line.26">    } // pkg_item.Beamer(.....)</a>
+<span class="sourceLineNo">027</span><a id="line.27">    </a>
+<span class="sourceLineNo">028</span><a id="line.28">    /**</a>
+<span class="sourceLineNo">029</span><a id="line.29">     * Constructeur qui initialise les attributs de la super classe</a>
+<span class="sourceLineNo">030</span><a id="line.30">     * ainsi que celui de la sous classe en le mettant à null</a>
+<span class="sourceLineNo">031</span><a id="line.31">     * @param pItemName le nom de l'item</a>
+<span class="sourceLineNo">032</span><a id="line.32">     * @param pItemDescription la description de l'item</a>
+<span class="sourceLineNo">033</span><a id="line.33">     * @param pItemWeight le poids de l'item</a>
+<span class="sourceLineNo">034</span><a id="line.34">     * @param pItemPrice le prix de l'item</a>
+<span class="sourceLineNo">035</span><a id="line.35">     */</a>
+<span class="sourceLineNo">036</span><a id="line.36">    public pkg_item.Beamer( final String pItemName, final String pItemDescription, </a>
+<span class="sourceLineNo">037</span><a id="line.37">                    final int pItemWeight, final int pItemPrice )</a>
+<span class="sourceLineNo">038</span><a id="line.38">    {</a>
+<span class="sourceLineNo">039</span><a id="line.39">        this(pItemName, pItemDescription, pItemWeight, pItemPrice, null);</a>
+<span class="sourceLineNo">040</span><a id="line.40">    } // pkg_item.Beamer(....)</a>
+<span class="sourceLineNo">041</span><a id="line.41">    </a>
+<span class="sourceLineNo">042</span><a id="line.42">    /**</a>
+<span class="sourceLineNo">043</span><a id="line.43">     * Accesseur à la valeur qui se trouve dans l'attribut aBeamerRoom</a>
+<span class="sourceLineNo">044</span><a id="line.44">     * @return la valeur stocker dans l'attribut aBeamerRoom</a>
+<span class="sourceLineNo">045</span><a id="line.45">     */</a>
+<span class="sourceLineNo">046</span><a id="line.46">    public pkg_room.pkg_room.pkg_room.Room getBeamerRoom()</a>
+<span class="sourceLineNo">047</span><a id="line.47">    {</a>
+<span class="sourceLineNo">048</span><a id="line.48">        return this.aBeamerRoom;</a>
+<span class="sourceLineNo">049</span><a id="line.49">    } // getBeamerRoom()</a>
+<span class="sourceLineNo">050</span><a id="line.50">    </a>
+<span class="sourceLineNo">051</span><a id="line.51">    /**</a>
+<span class="sourceLineNo">052</span><a id="line.52">     * Modificateur qui modifie la valeur de l'attribut aBeamerRoom</a>
+<span class="sourceLineNo">053</span><a id="line.53">     * @param pBeamerRoom la pièce utilisé pour modifier la valeur de l'attribut</a>
+<span class="sourceLineNo">054</span><a id="line.54">     */</a>
+<span class="sourceLineNo">055</span><a id="line.55">    public void setBeamerRoom( final pkg_room.pkg_room.pkg_room.Room pBeamerRoom )</a>
+<span class="sourceLineNo">056</span><a id="line.56">    {</a>
+<span class="sourceLineNo">057</span><a id="line.57">        this.aBeamerRoom = pBeamerRoom;</a>
+<span class="sourceLineNo">058</span><a id="line.58">    } // setBeamerRoom(.)</a>
+<span class="sourceLineNo">059</span><a id="line.59">    </a>
+<span class="sourceLineNo">060</span><a id="line.60">} // pkg_item.Beamer</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>
